@@ -12,6 +12,19 @@ type OrderConfirmation = {
   items: { product_name: string; quantity: number }[];
 };
 
+/** El asistente devuelve **negritas** en markdown; el chat es texto plano, así que lo parseamos a mano. */
+function renderChatText(text: string) {
+  return text.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
+    part.startsWith("**") && part.endsWith("**") ? (
+      <strong key={i} className="font-bold">
+        {part.slice(2, -2)}
+      </strong>
+    ) : (
+      <span key={i}>{part}</span>
+    )
+  );
+}
+
 const GREETING: Message = {
   role: "model",
   text: "¡Hola! Soy el asistente de Panadería Doña Rosa, potenciado por Hornito 🍞 Puedo mostrarte el catálogo y armar tu pedido anticipado. ¿Qué te gustaría pedir?",
@@ -75,7 +88,7 @@ export default function DemoChat() {
                 m.role === "user" ? "rounded-br-md bg-terracota text-harina" : "rounded-bl-md bg-hueso text-cafe"
               }`}
             >
-              {m.text}
+              {renderChatText(m.text)}
             </div>
           </div>
         ))}
