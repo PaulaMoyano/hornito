@@ -1,6 +1,6 @@
 # Hornito
 
-Hornito es un SaaS de pedidos anticipados con IA para panaderías, cafeterías y locales gastronómicos de barrio. Este repo tiene la landing del producto y una demo funcional del asistente conversacional.
+Hornito es un SaaS de pedidos anticipados con IA para panaderías y pastelerías argentinas. Este repo tiene la landing del producto y una demo funcional del asistente conversacional.
 
 > Proyecto final — Bootcamp IA 2026, [Tekne Data Labs](https://www.teknedatalabs.com).
 
