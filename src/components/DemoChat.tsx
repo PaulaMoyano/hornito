@@ -12,17 +12,29 @@ type OrderConfirmation = {
   items: { product_name: string; quantity: number }[];
 };
 
-/** El asistente devuelve **negritas** en markdown; el chat es texto plano, así que lo parseamos a mano. */
-function renderChatText(text: string) {
-  return text.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
+/** Convierte una línea de texto con **negritas** markdown a nodos React. */
+function renderInline(line: string, keyPrefix: string) {
+  return line.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
     part.startsWith("**") && part.endsWith("**") ? (
-      <strong key={i} className="font-bold">
+      <strong key={`${keyPrefix}-${i}`} className="font-bold">
         {part.slice(2, -2)}
       </strong>
     ) : (
-      <span key={i}>{part}</span>
+      <span key={`${keyPrefix}-${i}`}>{part}</span>
     )
   );
+}
+
+/** El asistente devuelve markdown básico (negritas, listas con "* "/"- "); el chat es texto plano, así que lo parseamos a mano. */
+function renderChatText(text: string) {
+  return text.split("\n").map((line, i) => {
+    const bullet = line.match(/^(\*|-)\s+(.*)/);
+    return (
+      <span key={i} className="block">
+        {bullet ? <>• {renderInline(bullet[2], `${i}`)}</> : renderInline(line, `${i}`)}
+      </span>
+    );
+  });
 }
 
 const GREETING: Message = {
